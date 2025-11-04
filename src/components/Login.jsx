@@ -23,7 +23,7 @@ const Login = () => {
           emailId,
           password,
         },
-        { withCredentials: true }
+        { withCredentials: true } // allow setting the cookies by sending the cookie from backend
       );
       dispatch(addUser(res.data));
       return navigate("/");
@@ -42,7 +42,8 @@ const Login = () => {
       dispatch(addUser(res.data.data));
       return navigate("/profile");
     } catch (err) {
-      setError(err?.response?.data || "Something went wrong");
+      console.log("err ",err)
+      setError("This emailId is already used or not a vaild emailId" || "Something went wrong");
     }
   };
 

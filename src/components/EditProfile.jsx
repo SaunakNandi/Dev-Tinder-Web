@@ -102,7 +102,7 @@ const EditProfile = ({ user }) => {
                     type="text"
                     value={gender}
                     className="input input-bordered w-full max-w-xs"
-                    onChange={(e) => setGender(e.target.value)}
+                    onChange={(e) => setGender(e.target.value.toLowerCase())}
                   />
                 </label>
                 <label className="form-control w-full max-w-xs my-2">
@@ -128,6 +128,7 @@ const EditProfile = ({ user }) => {
         </div>
         <UserCard
           user={{ firstName, lastName, photoUrl, age, gender, about }}
+          buttonHide={true}
         />
       </div>
       {showToast && (
