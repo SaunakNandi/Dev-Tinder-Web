@@ -17,17 +17,19 @@ const Chat = () => {
       withCredentials: true,
     });
 
-    console.log(chat.data.messages);
 
-    const chatMessages = chat?.data?.messages.map((msg) => {
+    console.log(chat.data.data);
+
+    const chatMessages = chat?.data?.data?.messages?.map((msg) => {
       const { senderId, text } = msg;
       return {
+        senderId:senderId?._id,
         firstName: senderId?.firstName,
         lastName: senderId?.lastName,
         text,
       };
     });
-    setMessages(chatMessages);
+    setMessages(chatMessages ?? []);
   };
   useEffect(() => {
     fetchChatMessages();
@@ -44,10 +46,9 @@ const Chat = () => {
       userId,
       targetUserId,
     });
-
+    
     socket.on("messageReceived", ({ firstName, lastName, text }) => {
-      console.log(firstName + " :  " + text);
-      setMessages((messages) => [...messages, { firstName, lastName, text }]);
+      setMessages((prev) => [...prev, { firstName, lastName, text }]);
     });
 
     return () => {
@@ -59,7 +60,7 @@ const Chat = () => {
     const socket = createSocketConnection();
     socket.emit("sendMessage", {
       firstName: user.firstName,
-      lastName: user.lastName,
+      lastName: user?.lastName ?? "",
       userId,
       targetUserId,
       text: newMessage,
@@ -71,7 +72,7 @@ const Chat = () => {
     <div className="w-3/4 mx-auto border border-gray-600 m-5 h-[70vh] flex flex-col">
       <h1 className="p-5 border-b border-gray-600">Chat</h1>
       <div className="flex-1 overflow-scroll p-5">
-        {messages.map((msg, index) => {
+        {messages?.map((msg, index) => {
           return (
             <div
               key={index}
